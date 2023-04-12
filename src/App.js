@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import Bar from './Components/Bar';
+import Table from './Components/Table';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+function createData(title, description, deadline, priority, isComplete, action) {
+  return { title, description, deadline, priority, isComplete, action };
+}
+
+class App extends React.Component {
+  constructor(props){
+    super(props);
+
+    this.state = {
+      rows: [
+
+      ]
+    };
+
+    this.handleAdd = this.handleAdd.bind(this);
+  }
+  
+    handleAdd(title, description, deadline, priority, isComplete, action) {
+    this.setState({
+      rows: [...this.state.rows, createData(title, description, deadline, priority, isComplete, action)]
+    });
+  }
+
+  render(){
+    return (
+      <div>
+        <Bar handleAdd={this.handleAdd}/>
+        <Table rows={this.state.rows} />
+      </div>
+    );
+  }
 }
 
 export default App;
