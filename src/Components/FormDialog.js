@@ -28,7 +28,7 @@ export default function FormDialog(props) {
   };
 
   const handleAddLocal = () => {
-    props.handleAdd(title, description, deadline, priority, <Checkbox />, <ButtonStack />)
+    props.handleAdd(title, description, deadline, priority, <Checkbox />, <ButtonStack title={title} handleDelete={props.handleDelete}/>)
     setOpen(false);
   }
 
