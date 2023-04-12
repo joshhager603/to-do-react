@@ -5,16 +5,15 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import ControlPointIcon from '@mui/icons-material/ControlPoint';
+import EditIcon from '@mui/icons-material/Edit';
 import DatePicker from './DatePicker';
 import Box from '@mui/material/Box';
 import Radio from './Radio'
 import Checkbox from '@mui/material/Checkbox';
 import ButtonStack from './ButtonStack';
 
-export default function FormDialog(props) {
+export default function UpdateDialog(props) {
   const [open, setOpen] = React.useState(false);
-  const [title, setTitle] = React.useState('');
   const [description, setDescription] = React.useState('');
   const [deadline, setDeadline] = React.useState('');
   const [priority, setPriority] = React.useState('');
@@ -27,13 +26,9 @@ export default function FormDialog(props) {
     setOpen(false);
   };
 
-  const handleAddLocal = () => {
-    props.handleAdd(title, description, deadline, priority, <Checkbox />, <ButtonStack title={title} handleDelete={props.handleDelete} handleUpdate={props.handleUpdate}/>)
+  const handleUpdateLocal = () => {
+    props.handleUpdate(props.title, description, deadline, priority, <Checkbox />, <ButtonStack title={props.title} handleDelete={props.handleDelete} handleUpdate={props.handleUpdate}/>);
     setOpen(false);
-  }
-
-  const handleTitleChange = (e) => {
-    setTitle(e.target.value);
   };
 
   const handleDescriptionChange = (e) => {
@@ -48,26 +43,16 @@ export default function FormDialog(props) {
     setPriority(e.target.value);
   };
 
+
   return (
     <div>
-      <Button color='inherit' variant='outlined' onClick={handleClickOpen}>
-        <ControlPointIcon />&nbsp;Add
+      <Button color='primary' variant="contained" onClick={handleClickOpen}>
+        <EditIcon />&nbsp;Update
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle><ControlPointIcon />&nbsp;Add Task</DialogTitle>
+        <DialogTitle><EditIcon />&nbsp;Edit Task</DialogTitle>
         <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="title"
-            label="Title"
-            type="title"
-            fullWidth
-            variant="outlined"
-            value={title}
-            onChange={e => handleTitleChange(e)}
-          />
-          <TextField
+            <TextField
             autoFocus
             margin="dense"
             id="description"
@@ -77,23 +62,23 @@ export default function FormDialog(props) {
             variant="outlined"
             value={description}
             onChange={e => handleDescriptionChange(e)}
-          />
-          <Box mt={2}>
+            />
+            <Box mt={2}>
             <DatePicker
-              id='datepicker' 
-              handleDeadlineChange={handleDeadlineChange}
-              />
-          </Box>
-          <Box mt={2}>
+                id='datepicker' 
+                handleDeadlineChange={handleDeadlineChange}
+            />
+            </Box>
+            <Box mt={2}>
             <Radio 
             id='radio'
             handlePriorityChange={handlePriorityChange} 
             />
-          </Box>
+            </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleAddLocal}>Add</Button>
+          <Button onClick={handleUpdateLocal}>Subscribe</Button>
         </DialogActions>
       </Dialog>
     </div>

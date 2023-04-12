@@ -7,21 +7,36 @@ function createData(title, description, deadline, priority, isComplete, action) 
   return { title, description, deadline, priority, isComplete, action };
 }
 
-function removeFromArray(arr, value){
-  let index = -1;
-
+function find(arr, title){
   for(let i = 0; i < arr.length; i++){
-    if(arr[i].title === value){
-      index = i;
-      break;
+    if(arr[i].title === title){
+      return i;
     }
   }
-  
+
+  return -1;
+}
+
+function remove(arr, title){
+  let index = find(arr, title);
+
   if(index === -1){
     console.log('No such element to remove');
     return arr;
   } else {
     arr.splice(index, 1);
+    return arr;
+  }
+}
+
+function replace(arr, title, newTask){
+  let index = find(arr, title);
+
+  if(index === -1){
+    console.log('No such element to modify');
+    return arr;
+  } else {
+    arr.splice(index, 1, newTask)
     return arr;
   }
 }
@@ -38,6 +53,7 @@ class App extends React.Component {
 
     this.handleAdd = this.handleAdd.bind(this);
     this.handleDelete =  this.handleDelete.bind(this);
+    this.handleUpdate = this.handleUpdate.bind(this);
   }
   
   handleAdd(title, description, deadline, priority, isComplete, action) {
@@ -48,14 +64,20 @@ class App extends React.Component {
 
   handleDelete(title){
     this.setState({
-      rows: removeFromArray(this.state.rows, title)
+      rows: remove(this.state.rows, title)
+    });
+  }
+
+  handleUpdate(title, description, deadline, priority, isComplete, action){
+    this.setState({
+      rows: replace(this.state.rows, title, createData(title, description, deadline, priority, isComplete, action))
     });
   }
 
   render(){
     return (
       <div>
-        <Bar handleAdd={this.handleAdd} handleDelete={this.handleDelete}/>
+        <Bar handleAdd={this.handleAdd} handleDelete={this.handleDelete} handleUpdate={this.handleUpdate}/>
         <Table rows={this.state.rows} />
       </div>
     );
