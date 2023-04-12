@@ -10,7 +10,7 @@ import DatePicker from './DatePicker';
 import Box from '@mui/material/Box';
 import Radio from './Radio'
 import Checkbox from '@mui/material/Checkbox';
-import ButtonStack from '../ButtonStack';
+import ButtonStack from './ButtonStack';
 
 export default function FormDialog(props) {
   const [open, setOpen] = React.useState(false);
