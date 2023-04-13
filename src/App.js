@@ -88,6 +88,7 @@ class App extends React.Component {
     this.handleUpdateOff = this.handleUpdateOff.bind(this);
     this.handleUpdateOn = this.handleUpdateOn.bind(this);
     this.handleGetFields = this.handleGetFields.bind(this);
+    this.titleAdded = this.titleAdded.bind(this);
   }
   
   handleAdd(title, description, deadline, priority, isComplete, action) {
@@ -124,6 +125,17 @@ class App extends React.Component {
     return getFields(this.state.rows, title);
   }
 
+  titleAdded(title){
+    let i = find(this.state.rows, title);
+
+    if(i === -1){
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
+
   render(){
     return (
       <div>
@@ -134,6 +146,7 @@ class App extends React.Component {
           handleUpdateOff={this.handleUpdateOff} 
           handleUpdateOn={this.handleUpdateOn}
           handleGetFields={this.handleGetFields}
+          titleAdded={this.titleAdded}
         />
         <Table rows={this.state.rows} />
       </div>

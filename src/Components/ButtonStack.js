@@ -14,8 +14,10 @@ export default function ButtonStack(props) {
         handleUpdateOn={props.handleUpdateOn} 
         handleUpdateOff={props.handleUpdateOff}
         handleGetFields={props.handleGetFields}
+        handleDeleteClick={props.handleDeleteClick}
+        handleUpdateClick={props.handleUpdateClick}
       />
-      <DeleteButton handleDelete={props.handleDelete} title={props.title}/>
+      <DeleteButton handleDelete={props.handleDelete} title={props.title} handleDeleteClick={props.handleDeleteClick}/>
     </Stack>
   );
 }

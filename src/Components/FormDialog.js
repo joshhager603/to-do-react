@@ -4,7 +4,6 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import DatePicker from './DatePicker';
 import Box from '@mui/material/Box';
@@ -12,6 +11,8 @@ import Radio from './Radio'
 import ButtonStack from './ButtonStack';
 import CompleteCheckbox from './CompleteCheckbox';
 import dayjs from 'dayjs';
+import AddBar from './AddBar';
+import DoNotDisturbAltIcon from '@mui/icons-material/DoNotDisturbAlt';
 
 export default function FormDialog(props) {
   const [open, setOpen] = React.useState(false);
@@ -19,14 +20,54 @@ export default function FormDialog(props) {
   const [description, setDescription] = React.useState('');
   const [deadline, setDeadline] = React.useState('');
   const [priority, setPriority] = React.useState('');
+  const [titleError, setTitleError] = React.useState(false);
+  const [titleHelper, setTitleHelper] = React.useState('');
+  const [desError, setDesError] = React.useState(false);
+  const [desHelper, setDesHelper] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
     setDeadline(dayjs().format('MM/DD/YY'));
+    setPriority('Low');
   };
 
   const handleClose = () => {
     setOpen(false);
+    setTitle('');
+    setDescription('');
+    setTitleError(false);
+    setTitleHelper('');
+    setDesError(false);
+    setDesHelper('');
+  };
+
+  const validate = () => {
+   let valid = true;
+
+   if(title === ''){
+    valid = false;
+    setTitleError(true);
+    setTitleHelper('Must include a title');
+   } 
+   else if(props.titleAdded(title)){
+    valid = false;
+    setTitleError(true);
+    setTitleHelper('Duplicate title');
+   }
+
+   if(description === ''){
+    valid = false;
+    setDesError(true);
+    setDesHelper('Must include a description');
+   }
+
+   if(valid){
+    handleAddLocal();
+   }
+   else{
+    console.log('invalid input');
+   }
+
   };
 
   const handleAddLocal = () => {
@@ -45,8 +86,11 @@ export default function FormDialog(props) {
                       handleUpdateOn={props.handleUpdateOn} 
                       handleUpdateOff={props.handleUpdateOff}
                       handleGetFields={props.handleGetFields}
+                      handleDeleteClick={props.handleDeleteClick}
+                      handleUpdateClick={props.handleUpdateClick}
                     />)
-    setOpen(false);
+    props.handleAddClick();
+    handleClose();
   }
 
   const handleTitleChange = (e) => {
@@ -71,10 +115,12 @@ export default function FormDialog(props) {
         <ControlPointIcon />&nbsp;Add
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle><ControlPointIcon />&nbsp;Add Task</DialogTitle>
+        <AddBar />
         <DialogContent>
           <TextField
             autoFocus
+            error={titleError}
+            helperText={titleHelper}
             margin="dense"
             id="title"
             label="Title"
@@ -86,6 +132,8 @@ export default function FormDialog(props) {
           />
           <TextField
             autoFocus
+            error={desError}
+            helperText={desHelper}
             margin="dense"
             id="description"
             label="Description"
@@ -111,8 +159,8 @@ export default function FormDialog(props) {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleAddLocal}>Add</Button>
+          <Button color='primary' variant='contained'onClick={validate}><ControlPointIcon />&nbsp;Add</Button>
+          <Button color='error' variant='contained' onClick={handleClose}><DoNotDisturbAltIcon />&nbsp;Cancel</Button>
         </DialogActions>
       </Dialog>
     </div>

@@ -4,13 +4,14 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
 import EditIcon from '@mui/icons-material/Edit';
 import DatePicker from './DatePicker';
 import Box from '@mui/material/Box';
 import Radio from './Radio'
 import ButtonStack from './ButtonStack';
 import CompleteCheckbox from './CompleteCheckbox';
+import UpdateBar from './UpdateBar'
+import DoNotDisturbAltIcon from '@mui/icons-material/DoNotDisturbAlt';
 
 export default function UpdateDialog(props) {
     const [open, setOpen] = React.useState(false);
@@ -48,7 +49,10 @@ export default function UpdateDialog(props) {
                                 handleUpdateOn={props.handleUpdateOn} 
                                 handleUpdateOff={props.handleUpdateOff}
                                 handleGetFields={props.handleGetFields}
+                                handleDeleteClick={props.handleDeleteClick}
+                                handleUpdateClick={props.handleUpdateClick}
                             />);
+        props.handleUpdateClick();
         setOpen(false);
     };
 
@@ -71,7 +75,7 @@ export default function UpdateDialog(props) {
                 <EditIcon />&nbsp;Update
             </Button>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle><EditIcon />&nbsp;Edit Task</DialogTitle>
+                <UpdateBar />
                 <DialogContent>
                     <TextField
                     autoFocus
@@ -100,8 +104,8 @@ export default function UpdateDialog(props) {
                     </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={handleUpdateLocal}>Edit</Button>
+                    <Button color='primary' variant='contained' onClick={handleUpdateLocal}><EditIcon />&nbsp;Edit</Button>
+                    <Button color='error' variant='contained' onClick={handleClose}><DoNotDisturbAltIcon />&nbsp;Cancel</Button>
                 </DialogActions>
             </Dialog>
         </div>
