@@ -44,6 +44,11 @@ export default function FormDialog(props) {
   const validate = () => {
    let valid = true;
 
+  setTitleError(false);
+  setTitleHelper('');
+  setDesError(false);
+  setDesHelper('');
+
    if(title === ''){
     valid = false;
     setTitleError(true);
