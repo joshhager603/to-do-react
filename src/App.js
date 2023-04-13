@@ -1,6 +1,8 @@
 import React from 'react';
 import Bar from './Components/Bar';
 import Table from './Components/Table';
+import DeleteButton from './Components/DeleteButton';
+import ButtonStack from './Components/ButtonStack';
 
 
 function createData(title, description, deadline, priority, isComplete, action) {
@@ -41,6 +43,35 @@ function replace(arr, title, newTask){
   }
 }
 
+function getFields(arr, title){
+  let i = find(arr, title);
+  let fieldArr = [arr[i].description, arr[i].deadline, arr[i].priority];
+
+  return fieldArr;
+}
+
+function toggleUpdateOff(arr, title, handleDelete){
+  let index = find(arr, title);
+
+  arr[index].action = <DeleteButton handleDelete={handleDelete} title={title}/>;
+
+  return arr;
+}
+
+function toggleUpdateOn(arr, title, handleDelete, handleUpdate, handleUpdateOn, handleUpdateOff){
+  let index = find(arr, title);
+
+  arr[index].action = <ButtonStack 
+                        title={title} 
+                        handleDelete={handleDelete} 
+                        handleUpdate={handleUpdate} 
+                        handleUpdateOn={handleUpdateOn} 
+                        handleUpdateOff={handleUpdateOff}
+                      />;
+  
+  return arr;
+}
+
 class App extends React.Component {
   constructor(props){
     super(props);
@@ -54,6 +85,9 @@ class App extends React.Component {
     this.handleAdd = this.handleAdd.bind(this);
     this.handleDelete =  this.handleDelete.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
+    this.handleUpdateOff = this.handleUpdateOff.bind(this);
+    this.handleUpdateOn = this.handleUpdateOn.bind(this);
+    this.handleGetFields = this.handleGetFields.bind(this);
   }
   
   handleAdd(title, description, deadline, priority, isComplete, action) {
@@ -74,10 +108,33 @@ class App extends React.Component {
     });
   }
 
+  handleUpdateOff(title, handleDelete){
+    this.setState({
+      rows: toggleUpdateOff(this.state.rows, title, handleDelete)
+    });
+  }
+
+  handleUpdateOn(title, handleDelete, handleUpdate, handleUpdateOn, handleUpdateOff){
+    this.setState({
+      rows: toggleUpdateOn(this.state.rows, title, handleDelete, handleUpdate, handleUpdateOn, handleUpdateOff)
+    });
+  }
+
+  handleGetFields(title){
+    return getFields(this.state.rows, title);
+  }
+
   render(){
     return (
       <div>
-        <Bar handleAdd={this.handleAdd} handleDelete={this.handleDelete} handleUpdate={this.handleUpdate}/>
+        <Bar 
+          handleAdd={this.handleAdd} 
+          handleDelete={this.handleDelete} 
+          handleUpdate={this.handleUpdate} 
+          handleUpdateOff={this.handleUpdateOff} 
+          handleUpdateOn={this.handleUpdateOn}
+          handleGetFields={this.handleGetFields}
+        />
         <Table rows={this.state.rows} />
       </div>
     );

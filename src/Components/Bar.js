@@ -15,7 +15,14 @@ export default function ButtonAppBar(props) {
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           Frameworks
         </Typography>
-        <FormDialog handleAdd={props.handleAdd} handleDelete={props.handleDelete} handleUpdate={props.handleUpdate}/>
+        <FormDialog 
+          handleAdd={props.handleAdd} 
+          handleDelete={props.handleDelete} 
+          handleUpdate={props.handleUpdate} 
+          handleUpdateOff={props.handleUpdateOff} 
+          handleUpdateOn={props.handleUpdateOn}
+          handleGetFields={props.handleGetFields}
+        />
       </Toolbar>
     </AppBar>
   </Box>

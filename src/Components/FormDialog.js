@@ -9,8 +9,9 @@ import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import DatePicker from './DatePicker';
 import Box from '@mui/material/Box';
 import Radio from './Radio'
-import Checkbox from '@mui/material/Checkbox';
 import ButtonStack from './ButtonStack';
+import CompleteCheckbox from './CompleteCheckbox';
+import dayjs from 'dayjs';
 
 export default function FormDialog(props) {
   const [open, setOpen] = React.useState(false);
@@ -21,6 +22,7 @@ export default function FormDialog(props) {
 
   const handleClickOpen = () => {
     setOpen(true);
+    setDeadline(dayjs().format('MM/DD/YY'));
   };
 
   const handleClose = () => {
@@ -28,7 +30,22 @@ export default function FormDialog(props) {
   };
 
   const handleAddLocal = () => {
-    props.handleAdd(title, description, deadline, priority, <Checkbox />, <ButtonStack title={title} handleDelete={props.handleDelete} handleUpdate={props.handleUpdate}/>)
+    props.handleAdd(title, description, deadline, priority, 
+                    <CompleteCheckbox 
+                      title={title} 
+                      handleUpdateOff={props.handleUpdateOff} 
+                      handleUpdateOn={props.handleUpdateOn} 
+                      handleUpdate={props.handleUpdate} 
+                      handleDelete={props.handleDelete}
+                    />, 
+                    <ButtonStack 
+                      title={title} 
+                      handleDelete={props.handleDelete} 
+                      handleUpdate={props.handleUpdate} 
+                      handleUpdateOn={props.handleUpdateOn} 
+                      handleUpdateOff={props.handleUpdateOff}
+                      handleGetFields={props.handleGetFields}
+                    />)
     setOpen(false);
   }
 
@@ -82,12 +99,14 @@ export default function FormDialog(props) {
             <DatePicker
               id='datepicker' 
               handleDeadlineChange={handleDeadlineChange}
+              deadline={''}
               />
           </Box>
           <Box mt={2}>
             <Radio 
             id='radio'
-            handlePriorityChange={handlePriorityChange} 
+            handlePriorityChange={handlePriorityChange}
+            priority={'Low'} 
             />
           </Box>
         </DialogContent>
