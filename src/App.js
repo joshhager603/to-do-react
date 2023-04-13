@@ -50,15 +50,15 @@ function getFields(arr, title){
   return fieldArr;
 }
 
-function toggleUpdateOff(arr, title, handleDelete){
+function toggleUpdateOff(arr, title, handleDelete, handleDeleteClick){
   let index = find(arr, title);
 
-  arr[index].action = <DeleteButton handleDelete={handleDelete} title={title}/>;
+  arr[index].action = <DeleteButton handleDelete={handleDelete} title={title} handleDeleteClick={handleDeleteClick}/>;
 
   return arr;
 }
 
-function toggleUpdateOn(arr, title, handleDelete, handleUpdate, handleUpdateOn, handleUpdateOff){
+function toggleUpdateOn(arr, title, handleDelete, handleUpdate, handleUpdateOn, handleUpdateOff, handleGetFields, handleDeleteClick, handleUpdateClick){
   let index = find(arr, title);
 
   arr[index].action = <ButtonStack 
@@ -67,6 +67,9 @@ function toggleUpdateOn(arr, title, handleDelete, handleUpdate, handleUpdateOn, 
                         handleUpdate={handleUpdate} 
                         handleUpdateOn={handleUpdateOn} 
                         handleUpdateOff={handleUpdateOff}
+                        handleGetFields={handleGetFields}
+                        handleDeleteClick={handleDeleteClick}
+                        handleUpdateClick={handleUpdateClick}
                       />;
   
   return arr;
@@ -79,7 +82,10 @@ class App extends React.Component {
     this.state = {
       rows: [
 
-      ]
+      ],
+      deleteToasterOpen: false,
+      updateToasterOpen: false,
+      addToasterOpen: false
     };
 
     this.handleAdd = this.handleAdd.bind(this);
@@ -89,6 +95,12 @@ class App extends React.Component {
     this.handleUpdateOn = this.handleUpdateOn.bind(this);
     this.handleGetFields = this.handleGetFields.bind(this);
     this.titleAdded = this.titleAdded.bind(this);
+    this.handleDeleteClick = this.handleDeleteClick.bind(this);
+    this.handleUpdateClick = this.handleUpdateClick.bind(this);
+    this.handleAddClick = this.handleAddClick.bind(this);
+    this.handleDeleteToasterClose = this.handleDeleteToasterClose.bind(this);
+    this.handleUpdateToasterClose = this.handleUpdateToasterClose.bind(this);
+    this.handleAddToasterClose = this.handleAddToasterClose.bind(this);
   }
   
   handleAdd(title, description, deadline, priority, isComplete, action) {
@@ -111,13 +123,13 @@ class App extends React.Component {
 
   handleUpdateOff(title, handleDelete){
     this.setState({
-      rows: toggleUpdateOff(this.state.rows, title, handleDelete)
+      rows: toggleUpdateOff(this.state.rows, title, handleDelete, this.handleDeleteClick)
     });
   }
 
   handleUpdateOn(title, handleDelete, handleUpdate, handleUpdateOn, handleUpdateOff){
     this.setState({
-      rows: toggleUpdateOn(this.state.rows, title, handleDelete, handleUpdate, handleUpdateOn, handleUpdateOff)
+      rows: toggleUpdateOn(this.state.rows, title, handleDelete, handleUpdate, handleUpdateOn, handleUpdateOff, this.handleGetFields, this.handleDeleteClick, this.handleUpdateClick)
     });
   }
 
@@ -136,6 +148,42 @@ class App extends React.Component {
     }
   }
 
+  handleDeleteClick() {
+    this.setState({deleteToasterOpen: true});
+  };
+
+  handleUpdateClick(){
+    this.setState({updateToasterOpen: true});
+  }
+
+  handleAddClick(){
+    this.setState({addToasterOpen: true});
+  }
+
+  handleDeleteToasterClose(event, reason){
+    if(reason === 'clickaway'){
+        return;
+    }
+
+    this.setState({deleteToasterOpen: false});
+  };
+
+  handleUpdateToasterClose(event, reason){
+    if(reason === 'clickaway'){
+        return;
+    }
+
+    this.setState({updateToasterOpen: false});
+  };
+
+  handleAddToasterClose(event, reason){
+    if(reason === 'clickaway'){
+        return;
+    }
+
+    this.setState({addToasterOpen: false});
+  };
+
   render(){
     return (
       <div>
@@ -147,6 +195,15 @@ class App extends React.Component {
           handleUpdateOn={this.handleUpdateOn}
           handleGetFields={this.handleGetFields}
           titleAdded={this.titleAdded}
+          handleDeleteClick={this.handleDeleteClick}
+          handleUpdateClick={this.handleUpdateClick}
+          handleAddClick={this.handleAddClick}
+          handleDeleteToasterClose = {this.handleDeleteToasterClose}
+          handleUpdateToasterClose = {this.handleUpdateToasterClose}
+          handleAddToasterClose = {this.handleAddToasterClose}
+          deleteToasterOpen = {this.state.deleteToasterOpen}
+          updateToasterOpen = {this.state.updateToasterOpen}
+          addToasterOpen = {this.state.addToasterOpen}
         />
         <Table rows={this.state.rows} />
       </div>

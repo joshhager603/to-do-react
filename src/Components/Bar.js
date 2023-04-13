@@ -9,46 +9,6 @@ import IconButton from '@mui/material/IconButton';
 import SuccessToaster from './SuccessToaster';
 
 export default function ButtonAppBar(props) {
-  const [deleteToasterOpen, setDeleteToasterOpen] = React.useState(false);
-  const [updateToasterOpen, setUpdateToasterOpen] = React.useState(false);
-  const [addToasterOpen, setAddToasterOpen] = React.useState(false);
-
-  const handleDeleteClick = () => {
-    setDeleteToasterOpen(true);
-  };
-
-  const handleUpdateClick = () => {
-    setUpdateToasterOpen(true);
-  }
-
-  const handleAddClick = () => {
-    setAddToasterOpen(true);
-  }
-
-  const handleDeleteToasterClose = (event, reason) => {
-    if(reason === 'clickaway'){
-        return;
-    }
-
-    setDeleteToasterOpen(false);
-  };
-
-  const handleUpdateToasterClose = (event, reason) => {
-    if(reason === 'clickaway'){
-        return;
-    }
-
-    setUpdateToasterOpen(false);
-  };
-
-  const handleAddToasterClose = (event, reason) => {
-    if(reason === 'clickaway'){
-        return;
-    }
-
-    setAddToasterOpen(false);
-  };
-
   return (
     <div>
       <Box sx={{ flexGrow: 1 }}>
@@ -73,16 +33,16 @@ export default function ButtonAppBar(props) {
               handleUpdateOn={props.handleUpdateOn}
               handleGetFields={props.handleGetFields}
               titleAdded={props.titleAdded}
-              handleDeleteClick={handleDeleteClick}
-              handleUpdateClick={handleUpdateClick}
-              handleAddClick={handleAddClick}
+              handleDeleteClick={props.handleDeleteClick}
+              handleUpdateClick={props.handleUpdateClick}
+              handleAddClick={props.handleAddClick}
             />
           </Toolbar>
         </AppBar>
       </Box>
-      <SuccessToaster open={deleteToasterOpen} handleToasterClose={handleDeleteToasterClose} message="Task successfully deleted" />
-      <SuccessToaster open={updateToasterOpen} handleToasterClose={handleUpdateToasterClose} message="Task successfully updated" />
-      <SuccessToaster open={addToasterOpen} handleToasterClose={handleAddToasterClose} message="Task successfully added" />
+      <SuccessToaster open={props.deleteToasterOpen} handleToasterClose={props.handleDeleteToasterClose} message="Task successfully deleted" />
+      <SuccessToaster open={props.updateToasterOpen} handleToasterClose={props.handleUpdateToasterClose} message="Task successfully updated" />
+      <SuccessToaster open={props.addToasterOpen} handleToasterClose={props.handleAddToasterClose} message="Task successfully added" />
     </div>
 
   );
